@@ -12,8 +12,8 @@ public class Main extends PApplet {
     private final static int WIDTH = 800;
     private final static int HEIGHT = 800;
 
-    private final static int SAMPLE_WIDTH = 800;
-    private final static int SAMPLE_HEIGHT = 800;
+    private final static int SAMPLE_WIDTH = 200;
+    private final static int SAMPLE_HEIGHT = 200;
 
 
     public PImage backbuffer;
@@ -24,7 +24,7 @@ public class Main extends PApplet {
 
     @Override
     public void settings() {
-        size(WIDTH, HEIGHT, P2D);
+        size(WIDTH, HEIGHT, P3D);
         backbuffer = new PImage(SAMPLE_WIDTH, SAMPLE_HEIGHT);
     }
 
@@ -43,22 +43,23 @@ public class Main extends PApplet {
 
         }
         backbuffer.updatePixels();
-        shaderLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P2D);
+        shaderLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P3D);
         turingShader = loadShader("turingFrag.glsl");
+        //frameRate(30);
     }
 
     @Override
     public void draw() {
-        frameRate(30);
         shaderLayer.beginDraw();
             shaderLayer.background(0);
             turingShader.set("uSampler", backbuffer);
             turingShader.set("sourceDimensions", (float) SAMPLE_WIDTH, (float) SAMPLE_HEIGHT);
             shaderLayer.shader(turingShader);
-            shaderLayer.rect(0, 0, width, height);
-            backbuffer = shaderLayer.get();
+            shaderLayer.rect(0, 0, SAMPLE_WIDTH, SAMPLE_HEIGHT);
             shaderLayer.resetShader();
         shaderLayer.endDraw();
+        backbuffer = shaderLayer.get();
+
         image(shaderLayer, 0, 0, WIDTH, HEIGHT);
     }
 }
