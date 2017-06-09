@@ -1,20 +1,49 @@
-precision mediump float;
+precision highp float;
 
 uniform vec2 sourceDimensions;
 uniform sampler2D uSampler;
 
 vec2 R(vec2 val, float alpha, float beta) {
-    return
-        vec2(val.r - pow(val.r, 3.0) - val.g + alpha, (val.r - val.g) * beta);
+//    float s = 20.3125;
+    float s = 0.325;
+//    return
+//        vec2(val.r - pow(val.r, 3.0) - val.g + alpha,
+//            (val.r - val.g) * beta);
+    return vec2(
+            s * (16 - val.r * val.g),
+            s * (val.r * val.g - val.g - 12));
 }
 
-void main() {
-    float dt = 0.00000000000000000000000001;
-    float dx = 1.0;
-    vec2 D = vec2(1.0, 100.0);
 
-    float alpha = -0.005;
-    float beta = 10.0;
+
+void main() {
+// Łatki
+//    float dt = 0.0000000004047;
+//    float dx = 0.00001;
+//    vec2 D = vec2(0.125, 0.0625);
+
+// Podwójne Łatki
+//    float dx = 1.0/sourceDimensions.x;
+//    float dy = 1.0/sourceDimensions.y;
+//    float dt = 0.0000085;
+//    vec2 D = vec2(0.085, 0.0625);
+
+// Podwójne Łatki
+    float dx = 1.0/sourceDimensions.x;
+    float dy = 1.0/sourceDimensions.y;
+    float dt = 0.0000085;
+//    float dt = 0.001;
+    vec2 D = vec2(0.065, 0.0065);
+
+// Kwadraty
+//    float dt = 0.000006;
+//    float dx = 0.01;
+//    vec2 D = vec2(0.125, 0.0625);
+
+
+
+    float alpha = 1.005;
+    float beta = 1.1;
 
     vec2 pos = vec2(gl_FragCoord.x/sourceDimensions.x, 1.0 - gl_FragCoord.y/sourceDimensions.y);
 
@@ -28,14 +57,13 @@ void main() {
     vec2 n = texture2D(uSampler, pos + cellStepY).xy;
     vec2 s = texture2D(uSampler, pos - cellStepY).xy;
 
-    vec2 laplacian = (- 4 * o + e + w + n + s) / pow(dx, 2);
+    vec2 laplacian = (- 4 * o + e + w + n + s) / (dx * dy);
 
     vec2 react = R(o, alpha, beta);
 
     vec2 delta = dt * (D * laplacian + react);
 
-    vec3 of = vec3(o + delta, 0.5);
+    vec3 of = clamp(vec3(o + delta, 0.0), 0.0, 1.0);
 
     gl_FragColor = vec4(of, 1.0);
-
 }
