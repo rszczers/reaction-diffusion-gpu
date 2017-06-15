@@ -35,10 +35,10 @@ public class Main extends PApplet {
     private static int laplacian = 0;
     private static String brushTypeLabel = "activator";
 
-    private static float Du = 1.0f;
-    private static float Dv = 0.34f;
-    private static float k = 0.06f;
-    private static float f = 0.041f;
+    private static float Du = 0.16f;
+    private static float Dv = 0.08f;
+    private static float f = 0.035f;
+    private static float k = 0.065f;
     private static float s = 0.01125f;
     private static float dt = 1.0f;
 
@@ -298,9 +298,9 @@ public class Main extends PApplet {
             int height = 10;
             int top = HEIGHT - 10 * height;
 
-            cp5Scott.addSlider("f", 0.0f, 0.2f, left, top, length, height)
+            cp5Scott.addSlider("f", 0.0f, 0.65f, left, top, length, height)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-            cp5Scott.addSlider("k", 0.0f, 0.2f, left, top + 2 * height, length, height)
+            cp5Scott.addSlider("k", 0.0f, 0.65f, left, top + 2 * height, length, height)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
             cp5Scott.addSlider("Du", 0.0f, 1.0f, left, top + 4 * height, length, height)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
