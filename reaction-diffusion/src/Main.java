@@ -1,7 +1,4 @@
-import processing.core.PApplet;
-import processing.core.PFont;
-import processing.core.PGraphics;
-import processing.core.PImage;
+import processing.core.*;
 import processing.opengl.PShader;
 import java.util.Random;
 
@@ -13,13 +10,13 @@ public class Main extends PApplet {
     private PGraphics presentationLayer;
 
     private PShader turingShader;
-    private PShader interShader;
+    private PShader renderShader;
 
-    private final static int WIDTH = 800;
-    private final static int HEIGHT = 800;
+    private final static int WIDTH = 1024;
+    private final static int HEIGHT = 1024;
 
-    private final static int SAMPLE_WIDTH = 800;
-    private final static int SAMPLE_HEIGHT = 800;
+    private final static int SAMPLE_WIDTH = 1024;
+    private final static int SAMPLE_HEIGHT = 1024;
 
     private static boolean drawPresentation = true;
     private static int brushType = 0;
@@ -36,7 +33,7 @@ public class Main extends PApplet {
 
     @Override
     public void settings() {
-        size(WIDTH, HEIGHT, P3D);
+        size(WIDTH, HEIGHT, P2D);
         backbuffer = new PImage(SAMPLE_WIDTH, SAMPLE_HEIGHT);
     }
 
@@ -47,14 +44,16 @@ public class Main extends PApplet {
         int k = backbuffer.pixels.length;
         for (int i = 0; i < k; i++) {
             int j = random.nextInt(k);
-            if(random.nextBoolean()) {
-                backbuffer.pixels[j] = color(random.nextInt(255), 0, random.nextInt(100));
-            } else {
-                backbuffer.pixels[j] = color(0, random.nextInt(255), random.nextInt(100));
-            }
+//            if(random.nextBoolean()) {
+//                backbuffer.pixels[j] = color(random.nextInt(255), 0, random.nextInt(100));
+//            } else {
+//                backbuffer.pixels[j] = color(0, random.nextInt(255), random.nextInt(100));
+//            }
+            backbuffer.pixels[i] = color(255, 0, 0);
         }
         backbuffer.updatePixels();
-//        backbuffer = loadImage("init.jpg");
+//        backbuffer = loadImage("feliks.jpg");
+
 
         shaderLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P3D);
 
@@ -62,13 +61,16 @@ public class Main extends PApplet {
             shaderLayer.image(backbuffer, 0, 0, WIDTH, HEIGHT);
         shaderLayer.endDraw();
 
-        presentationLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P3D);
+        presentationLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P2D);
         turingShader = loadShader("turingFrag.glsl");
-        interShader = loadShader("interFrag.glsl");
+        renderShader = loadShader("renderFrag.glsl");
+
+        renderShader.set("ca",new PVector(0,0,0));
+        renderShader.set("cb",new PVector(1.0f,1.0f,1.0f));
 
         roboto_regular = createFont("Roboto-Regular.ttf", 14);
         textFont(roboto_regular);
-//        frameRate(60);
+//        frameRate(30);
 
         noCursor();
         noStroke();
@@ -76,93 +78,99 @@ public class Main extends PApplet {
 
     @Override
     public void draw() {
-        background(0);
+        if (mousePressed == true) mouseEvent();
+
         shaderLayer.beginDraw();
-            turingShader.set("uSampler", shaderLayer);
-            turingShader.set("sourceDimensions", (float) SAMPLE_WIDTH, (float) SAMPLE_HEIGHT);
-            shaderLayer.shader(turingShader);
-            shaderLayer.rect(0, 0, SAMPLE_WIDTH, SAMPLE_HEIGHT);
-            shaderLayer.resetShader();
+            shaderLayer.filter(turingShader);
         shaderLayer.endDraw();
 
-        if (mousePressed == true) {
-            shaderLayer.beginDraw();
-                shaderLayer.noStroke();
-            switch(brushType) {
-                case 0: // red
-                    for (int i = 0; i < brushDensity; i++) {
-                        shaderLayer.fill(200+random(55), 0.0f, random(100), 55 + random(200));
-                        shaderLayer.rect(mouseX + random(-brushSize, brushSize), mouseY + random(-brushSize, brushSize), brushWeight, brushWeight);
-                    }
-                    break;
-                case 1: // green
-                    for (int i = 0; i < brushDensity; i++) {
-                        shaderLayer.fill(0.0f, 200 + random(55), random(100), 55 + random(200));
-                        shaderLayer.rect(mouseX + random(-brushSize, brushSize), mouseY + random(-brushSize, brushSize), brushWeight, brushWeight);
-                    }
-                    break;
-                case 2: // eraser
-                    for (int i = 0; i < brushDensity; i++) {
-                        shaderLayer.fill(0.0f, 0.0f, random(100), 255);
-                        shaderLayer.rect(mouseX + random(-brushSize, brushSize), mouseY + random(-brushSize, brushSize), brushWeight, brushWeight);
-                    }
-                    break;
-                case 3: //random
-                    for (int i = 0; i < brushDensity; i++) {
-                        shaderLayer.fill(random(255), random(255), random(100), 155 + random(100));
-                        shaderLayer.rect(mouseX + random(-brushSize, brushSize), mouseY + random(-brushSize, brushSize), brushWeight, brushWeight);
-                    }
-                    break;
-            }
-            shaderLayer.endDraw();
-        }
+        image(shaderLayer, 0, 0, WIDTH, HEIGHT);
 
-        presentationLayer.beginDraw();
-            interShader.set("uSampler", shaderLayer);
-            interShader.set("sourceDimensions", (float) SAMPLE_WIDTH, (float) SAMPLE_HEIGHT);
-            presentationLayer.shader(interShader);
-            presentationLayer.rect(0, 0, WIDTH, HEIGHT);
-            presentationLayer.resetShader();
-        presentationLayer.endDraw();
-
-        if (drawPresentation == true) {
-            image(presentationLayer, 0, 0, WIDTH, HEIGHT);
-        } else {
-            image(shaderLayer, 0, 0, WIDTH, HEIGHT);
-        }
-
-
-        fill(5);
-        rect(0.0f, 0.0f, 50f, 20f);
-        fill(245);
-        text((int)frameRate, 10.0f, 15.0f);
         if (drawPresentation == false) {
             fill(5);
             rect(0.0f, 20.0f, 90f, 20f);
             fill(245);
             text("Backbuffer", 10.0f, 35.0f);
+        } else {
+            filter(renderShader);
         }
 
         if (drawCursor) {
-            switch (brushType) {
-                case 0:
-                    fill(255f, 0f, 0f, 25f);
-                    break;
-                case 1:
-                    fill(0f, 255f, 0f, 25f);
-                    break;
-                case 2:
-                    fill(0f, 0f, 255f, 25f);
-                    break;
-                case 3:
-                    fill(255f, 0f, 255f, 25f);
-                    break;
-                default:
-                    fill(255f, 255f, 255f, 25f);
-                    break;
-            }
-            rect(mouseX - brushSize, mouseY - brushSize, 2 * brushSize, 2 * brushSize);
+            cursor();
         }
+
+        drawfps();
+    }
+
+    public void cursor() {
+        switch (brushType) {
+            case 0:
+                fill(255f, 0f, 0f, 25f);
+                break;
+            case 1:
+                fill(0f, 255f, 0f, 25f);
+                break;
+            case 2:
+                fill(0f, 0f, 255f, 25f);
+                break;
+            case 3:
+                fill(255f, 0f, 255f, 25f);
+                break;
+            case 4:
+                fill(255f, 0f, 255f, 25f);
+                break;
+            default:
+                fill(255f, 255f, 255f, 25f);
+                break;
+        }
+        rect(mouseX - brushSize, mouseY - brushSize, 2 * brushSize, 2 * brushSize);
+    }
+
+    public void drawfps() {
+        fill(5);
+        rect(0.0f, 0.0f, 50f, 20f);
+        fill(245);
+        text((int)frameRate, 10.0f, 15.0f);
+    }
+
+    public void mouseEvent() {
+        shaderLayer.beginDraw();
+        shaderLayer.noStroke();
+        switch(brushType) {
+            case 0: // red
+                for (int i = 0; i < brushDensity; i++) {
+                    shaderLayer.fill(200+random(55), 0.0f, random(100), 55 + random(200));
+                    shaderLayer.rect(mouseX + random(-brushSize, brushSize),
+                            mouseY + random(-brushSize, brushSize), brushWeight, brushWeight);
+                }
+                break;
+            case 1: // green
+                for (int i = 0; i < brushDensity; i++) {
+                    shaderLayer.rect(mouseX + random(-brushSize, brushSize),
+                            mouseY + random(-brushSize, brushSize), brushWeight, brushWeight);
+                }
+                break;
+            case 2: // eraser
+                for (int i = 0; i < brushDensity; i++) {
+                    shaderLayer.fill(0.0f, 0.0f, random(100), 255);
+                    shaderLayer.rect(mouseX + random(-brushSize, brushSize),
+                            mouseY + random(-brushSize, brushSize), brushWeight, brushWeight);
+                }
+                break;
+            case 3: //random
+                for (int i = 0; i < brushDensity; i++) {
+                    shaderLayer.fill(random(255), random(255), random(100), 155 + random(100));
+                    shaderLayer.rect(mouseX + random(-brushSize, brushSize),
+                            mouseY + random(-brushSize, brushSize), brushWeight, brushWeight);
+                }
+                break;
+            case 4:
+                shaderLayer.stroke(0,200,0);
+                shaderLayer.strokeWeight(15);
+                shaderLayer.line(pmouseX, pmouseY, mouseX, mouseY);
+                break;
+        }
+        shaderLayer.endDraw();
     }
 
     public void keyPressed() {
@@ -180,6 +188,9 @@ public class Main extends PApplet {
         }
         if (key == '4' || key == 'a' || key == 'A') {
             brushType = 3;
+        }
+        if (key == '5') {
+            brushType = 4;
         }
         if (key == '+' || key == '=') {
             brushSize *= 2;
