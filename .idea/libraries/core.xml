@@ -16,6 +16,7 @@
       <root url="jar://$USER_HOME$/Tools/processing-3.3/core/library/jogl-all-natives-windows-amd64.jar!/" />
       <root url="jar://$USER_HOME$/Tools/processing-3.3/core/library/jogl-all-natives-windows-i586.jar!/" />
       <root url="jar://$USER_HOME$/Tools/processing-3.3/core/library/jogl-all.jar!/" />
+      <root url="jar://$USER_HOME$/sketchbook/libraries/controlP5/library/controlP5.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
