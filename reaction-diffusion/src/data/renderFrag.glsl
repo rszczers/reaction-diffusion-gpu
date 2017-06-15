@@ -16,9 +16,7 @@ varying vec4 vertTexCoord;
 void main(void) {
 
   vec2 uv = texture2D(texture, vertTexCoord.st).rg;
-
-  float c = smoothstep(0.2, 0.8, uv.r - uv.g);
-  vec3 color = mix(ca, cb, c); 
+  float d = smoothstep(0.2, 0.8, uv.r - uv.g);
+  vec3 color = mix(cb/255.0, ca/255.0, d);
   gl_FragColor = vec4(color, 1.0);
-
 }

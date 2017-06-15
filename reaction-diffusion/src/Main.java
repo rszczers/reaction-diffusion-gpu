@@ -44,32 +44,24 @@ public class Main extends PApplet {
         int k = backbuffer.pixels.length;
         for (int i = 0; i < k; i++) {
             int j = random.nextInt(k);
-//            if(random.nextBoolean()) {
-//                backbuffer.pixels[j] = color(random.nextInt(255), 0, random.nextInt(100));
-//            } else {
-//                backbuffer.pixels[j] = color(0, random.nextInt(255), random.nextInt(100));
-//            }
-            backbuffer.pixels[i] = color(255, 0, 0);
+            if(random.nextBoolean()) {
+                backbuffer.pixels[j] = color(random.nextInt(255), 0, random.nextInt(100));
+            } else {
+                backbuffer.pixels[j] = color(0, random.nextInt(255), random.nextInt(100));
+            }
         }
         backbuffer.updatePixels();
-//        backbuffer = loadImage("feliks.jpg");
-<<<<<<< HEAD
-=======
-
->>>>>>> 442327f17d2fb1897ce3d587617516944ece1090
-
+        backbuffer = loadImage("init.png");
         shaderLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P3D);
 
         shaderLayer.beginDraw();
-            shaderLayer.image(backbuffer, 0, 0, WIDTH, HEIGHT);
+//            shaderLayer.image(backbuffer, 0, 0, WIDTH, HEIGHT);
+            shaderLayer.background(255.0f, 0, 0);
         shaderLayer.endDraw();
 
         presentationLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P2D);
         turingShader = loadShader("turingFrag.glsl");
         renderShader = loadShader("renderFrag.glsl");
-
-        renderShader.set("ca",new PVector(0,0,0));
-        renderShader.set("cb",new PVector(1.0f,1.0f,1.0f));
 
         roboto_regular = createFont("Roboto-Regular.ttf", 14);
         textFont(roboto_regular);
@@ -81,6 +73,9 @@ public class Main extends PApplet {
 
     @Override
     public void draw() {
+        renderShader.set("ca", new PVector(115, 98, 110));
+        renderShader.set("cb", new PVector(247,228,190));
+
         if (mousePressed == true) mouseEvent();
 
         shaderLayer.beginDraw();
@@ -101,17 +96,9 @@ public class Main extends PApplet {
         if (drawCursor) {
             cursor();
         }
-<<<<<<< HEAD
-
         drawfps();
     }
 
-=======
-
-        drawfps();
-    }
-
->>>>>>> 442327f17d2fb1897ce3d587617516944ece1090
     public void cursor() {
         switch (brushType) {
             case 0:
@@ -126,12 +113,9 @@ public class Main extends PApplet {
             case 3:
                 fill(255f, 0f, 255f, 25f);
                 break;
-<<<<<<< HEAD
-=======
             case 4:
                 fill(255f, 0f, 255f, 25f);
                 break;
->>>>>>> 442327f17d2fb1897ce3d587617516944ece1090
             default:
                 fill(255f, 255f, 255f, 25f);
                 break;
@@ -178,12 +162,9 @@ public class Main extends PApplet {
                 }
                 break;
             case 4:
-<<<<<<< HEAD
-=======
                 shaderLayer.stroke(0,200,0);
                 shaderLayer.strokeWeight(15);
                 shaderLayer.line(pmouseX, pmouseY, mouseX, mouseY);
->>>>>>> 442327f17d2fb1897ce3d587617516944ece1090
                 break;
         }
         shaderLayer.endDraw();
