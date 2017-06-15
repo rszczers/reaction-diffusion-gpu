@@ -11,19 +11,24 @@ uniform vec2 texOffset;
 uniform vec2 u_resolution;
 uniform vec2 u_mouse;
 
+uniform float Du;
+uniform float Dv;
+uniform float k;
+uniform float f;
+uniform float s;
+uniform float dt;
+uniform bool r;
+
 varying vec4 vertColor;
 varying vec4 vertTexCoord;
 
 vec2 RTurk(vec2 val, float beta) {
-    float s = 0.33125;
     return vec2(
             s * (16 - val.r * val.g),
             s * (val.r * val.g - val.g - beta));
 }
 
 vec2 grayScott(vec2 val) {
-   float f = 0.041;
-   float k = 0.06;
    return vec2(
            - val.r * val.g * val.g + f * (1.0 - val.r),
              val.r * val.g * val.g - (k + f) * val.g );
@@ -64,12 +69,8 @@ vec2 ReactionInhibitor(vec2 val) {
 void main() {
     float dx = 1.0;
     float dy = 1.0;
-    float dt = 1.0;
 
-    vec2 D = vec2(1.0, 0.34);
-
-    float z = texture2D(texture, vertTexCoord.st).z;
-    float beta = 12 + (0.1 - z/500.0);
+    vec2 D = vec2(Du, Dv);
 
     vec2 cellStepX = vec2(texOffset.x, 0.0);
     vec2 cellStepY = vec2(0.0, texOffset.y);
@@ -90,8 +91,19 @@ void main() {
     vec2 uv = texture2D(texture, vertTexCoord.st).xy;
     vec2 laplacian = f / pow(dx, 2.0);
 
-    vec2 delta = D * laplacian + grayScott(uv);
-    vec3 o = clamp(vec3(uv + dt * delta, 0.0), 0.0, 1.0);
+    vec2 react;
+    float z = texture2D(texture, vertTexCoord.st).z;
+
+    if (r) {
+        react = grayScott(uv);
+        z = 0.0;
+    } else {
+        float beta = 12 + z/10.0;
+        react = RTurk(uv, beta);
+    }
+
+    vec2 delta = D * laplacian + react;
+    vec3 o = clamp(vec3(uv + dt * delta, z), 0.0, 1.0);
 
     gl_FragColor = vec4(o, 1.0);
 }

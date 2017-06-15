@@ -15,11 +15,13 @@ public class Main extends PApplet {
 
     private ControlP5 cp5;
 
-    private final static int WIDTH = 1024;
-    private final static int HEIGHT = 1024;
+    private static int barHeight = 110;
 
-    private final static int SAMPLE_WIDTH = 1024;
-    private final static int SAMPLE_HEIGHT = 1024;
+    private final static int WIDTH = 800;
+    private final static int HEIGHT = 800;
+
+    private final static int SAMPLE_WIDTH = 800;
+    private final static int SAMPLE_HEIGHT = 800 - barHeight;
 
     private static boolean drawPresentation = true;
     private static int brushType = 0;
@@ -27,6 +29,15 @@ public class Main extends PApplet {
     private static int brushDensity = 60;
     private static float brushWeight = 2.0f;
     private static boolean drawCursor = true;
+    private static boolean grayScottOrTruk = true;
+    private static boolean mouseControllPanel = false;
+
+    private static float Du = 1.0f;
+    private static float Dv = 0.34f;
+    private static float k = 0.06f;
+    private static float f = 0.041f;
+    private static float s = -0.03125f;
+    private static float dt = 1.0f;
 
     public PImage backbuffer;
 
@@ -44,9 +55,7 @@ public class Main extends PApplet {
     public void setup() {
         cp5 = new ControlP5(this);
         setGUI();
-//        setGui2();
         Random random = new Random();
-        background(0);
         int k = backbuffer.pixels.length;
         for (int i = 0; i < k; i++) {
             int j = random.nextInt(k);
@@ -61,35 +70,44 @@ public class Main extends PApplet {
         shaderLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P3D);
 
         shaderLayer.beginDraw();
-            shaderLayer.image(backbuffer, 0, 0, WIDTH, HEIGHT);
+            shaderLayer.image(backbuffer, 0, 0, WIDTH, HEIGHT-barHeight);
 //            shaderLayer.background(255.0f, 0, 0);
         shaderLayer.endDraw();
-
 
         presentationLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P2D);
         turingShader = loadShader("turingFrag.glsl");
         renderShader = loadShader("renderFrag.glsl");
 
+        renderShader.set("ca", new PVector(115, 98, 110));
+        renderShader.set("cb", new PVector(247,228,190));
+
         roboto_regular = createFont("Roboto-Regular.ttf", 14);
         textFont(roboto_regular);
 //        frameRate(30);
 
-        noCursor();
+//        noCursor();
         noStroke();
+
+
     }
 
     @Override
     public void draw() {
-        renderShader.set("ca", new PVector(115, 98, 110));
-        renderShader.set("cb", new PVector(247,228,190));
+        turingShader.set("r", grayScottOrTruk);
+        turingShader.set("Du", Du);
+        turingShader.set("Dv", Dv);
+        turingShader.set("k", k);
+        turingShader.set("f", f);
+        turingShader.set("s", s);
+        turingShader.set("dt", dt);
 
-        if (mousePressed == true) mouseEvent();
+        if (mousePressed == true && !mouseControllPanel) mouseEvent();
 
         shaderLayer.beginDraw();
             shaderLayer.filter(turingShader);
         shaderLayer.endDraw();
 
-        image(shaderLayer, 0, 0, WIDTH, HEIGHT);
+        image(shaderLayer, 0, 0, WIDTH, HEIGHT-barHeight);
 
         if (drawPresentation == false) {
             fill(5);
@@ -99,15 +117,22 @@ public class Main extends PApplet {
         } else {
             filter(renderShader);
         }
-
-        if (drawCursor) {
+        if (drawCursor && !mouseControllPanel) {
+            noCursor();
+            brush();
+        } else {
             cursor();
+        }
+        if (mouseY > HEIGHT - barHeight) {
+            mouseControllPanel = true;
+        } else {
+            mouseControllPanel = false;
         }
         drawfps();
 
     }
 
-    public void cursor() {
+    public void brush() {
         switch (brushType) {
             case 0:
                 fill(255f, 0f, 0f, 25f);
@@ -220,47 +245,54 @@ public class Main extends PApplet {
         if (key == 'c' || key == 'C') {
             drawCursor = !drawCursor;
         }
+        if (key == 'z' || key == 'Z') {
+            grayScottOrTruk = !grayScottOrTruk;
+            settings();
+            setup();
+        }
     }
 
 
 
     void setGUI(){
+        cp5.remove("f");
+        cp5.remove("k");
+        cp5.remove("Du");
+        cp5.remove("Dv");
+        cp5.remove("dt");
+        cp5.remove("s");
 
-        int length = 200;
-        int left = WIDTH - length - 20;
-        int height = 10;
-        int top1 = HEIGHT - 10 * height;
+        if (grayScottOrTruk) {
+            int length = 200;
+            int left = WIDTH - length - 20;
+            int height = 10;
+            int top = HEIGHT - 10 * height;
 
-        cp5.addSlider("f",  .20f, 0.0540f, left, top1, length, height)
-                .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-        cp5.addSlider("k", .20f, 0.0620f, left, top1 + 2 * height, length, height)
-                .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-        cp5.addSlider("Du", 2.0f, 1.0f, left, top1 + 4 * height, length, height)
-                .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-        cp5.addSlider("Dv", 2.00f, 0.50f, left, top1 + 6 * height, length, height)
-                .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-        cp5.addSlider("dt", 2.0f, 1.0f, left, top1 + 8 * height, length, height)
-                .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
+            cp5.addSlider("f", .20f, 0.0540f, left, top, length, height)
+                    .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
+            cp5.addSlider("k", .20f, 0.0620f, left, top + 2 * height, length, height)
+                    .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
+            cp5.addSlider("Du", 2.0f, 1.0f, left, top + 4 * height, length, height)
+                    .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
+            cp5.addSlider("Dv", 2.00f, 0.50f, left, top + 6 * height, length, height)
+                    .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
+            cp5.addSlider("dt", 2.0f, 1.0f, left, top + 8 * height, length, height)
+                    .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
+        } else {
+            int length = 200;
+            int left = WIDTH - length - 20;
+            int height = 10;
+            int top = HEIGHT - 10 * height;
 
-
+            cp5.addSlider("s", .20f, 0.0620f, left, top , length, height)
+                    .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
+            cp5.addSlider("Du", 2.0f, 1.0f, left, top +  2 * height , length, height)
+                    .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
+            cp5.addSlider("Dv", 2.00f, 0.50f, left, top + 4 * height, length, height)
+                    .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
+            cp5.addSlider("dt", 2.0f, 1.0f, left, top + 6 * height, length, height)
+                    .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
+        }
     }
-
-    void setGui2(){
-        int length = 200;
-        int left = WIDTH - length - 20;
-        int height = 10;
-        int top = HEIGHT - 10 * height;
-
-        cp5.addSlider("s", .20f, 0.0620f, left, top , length, height)
-                .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-        cp5.addSlider("Du", 2.0f, 1.0f, left, top +  2 * height , length, height)
-                .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-        cp5.addSlider("Dv", 2.00f, 0.50f, left, top + 4 * height, length, height)
-                .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-        cp5.addSlider("dt", 2.0f, 1.0f, left, top + 6 * height, length, height)
-                .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-
-    }
-
 
 }
