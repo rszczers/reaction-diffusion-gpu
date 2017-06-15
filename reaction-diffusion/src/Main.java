@@ -13,7 +13,8 @@ public class Main extends PApplet {
     private PShader turingShader;
     private PShader renderShader;
 
-    private ControlP5 cp5;
+    private ControlP5 cp5Scott;
+    private ControlP5 cp5Turk;
 
     private static int barHeight = 110;
 
@@ -36,7 +37,7 @@ public class Main extends PApplet {
     private static float Dv = 0.34f;
     private static float k = 0.06f;
     private static float f = 0.041f;
-    private static float s = -0.03125f;
+    private static float s = 0.01125f;
     private static float dt = 1.0f;
 
     public PImage backbuffer;
@@ -53,7 +54,8 @@ public class Main extends PApplet {
 
     @Override
     public void setup() {
-        cp5 = new ControlP5(this);
+        cp5Scott = new ControlP5(this);
+        cp5Turk = new ControlP5(this);
         setGUI();
         Random random = new Random();
         int k = backbuffer.pixels.length;
@@ -88,7 +90,6 @@ public class Main extends PApplet {
 //        noCursor();
         noStroke();
 
-
     }
 
     @Override
@@ -117,6 +118,10 @@ public class Main extends PApplet {
         } else {
             filter(renderShader);
         }
+
+        fill(255);
+        rect(0.0f, HEIGHT - barHeight, WIDTH, barHeight);
+
         if (drawCursor && !mouseControllPanel) {
             noCursor();
             brush();
@@ -239,60 +244,63 @@ public class Main extends PApplet {
             }
         }
         if (key == 'r' || key == 'R') {
-            settings();
-            setup();
+            shaderLayer.beginDraw();
+//            shaderLayer.image(backbuffer, SAMPLE_WIDTH, SAMPLE_HEIGHT);
+            shaderLayer.fill(255, 0, 0);
+            shaderLayer.rect(0.0f, 0.0f, SAMPLE_WIDTH, SAMPLE_HEIGHT);
+            shaderLayer.endDraw();
+
         }
         if (key == 'c' || key == 'C') {
             drawCursor = !drawCursor;
         }
         if (key == 'z' || key == 'Z') {
             grayScottOrTruk = !grayScottOrTruk;
-            settings();
-            setup();
+
+            if(grayScottOrTruk){
+                cp5Turk.hide();
+                cp5Scott.show();
+                cp5Scott.update();
+            } else{
+                cp5Scott.hide();
+                cp5Turk.show();
+                cp5Turk.update();
+            }
         }
     }
 
 
 
     void setGUI(){
-        cp5.remove("f");
-        cp5.remove("k");
-        cp5.remove("Du");
-        cp5.remove("Dv");
-        cp5.remove("dt");
-        cp5.remove("s");
 
-        if (grayScottOrTruk) {
             int length = 200;
             int left = WIDTH - length - 20;
             int height = 10;
             int top = HEIGHT - 10 * height;
 
-            cp5.addSlider("f", .20f, 0.0540f, left, top, length, height)
+            cp5Scott.addSlider("f", 0.0f, 0.2f, left, top, length, height)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-            cp5.addSlider("k", .20f, 0.0620f, left, top + 2 * height, length, height)
+            cp5Scott.addSlider("k", 0.0f, 0.2f, left, top + 2 * height, length, height)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-            cp5.addSlider("Du", 2.0f, 1.0f, left, top + 4 * height, length, height)
+            cp5Scott.addSlider("Du", 0.0f, 1.0f, left, top + 4 * height, length, height)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-            cp5.addSlider("Dv", 2.00f, 0.50f, left, top + 6 * height, length, height)
+            cp5Scott.addSlider("Dv", 0.00f, 1.0f, left, top + 6 * height, length, height)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-            cp5.addSlider("dt", 2.0f, 1.0f, left, top + 8 * height, length, height)
+            cp5Scott.addSlider("dt", 0.0f, 3.0f, left, top + 8 * height, length, height)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-        } else {
-            int length = 200;
-            int left = WIDTH - length - 20;
-            int height = 10;
-            int top = HEIGHT - 10 * height;
 
-            cp5.addSlider("s", .20f, 0.0620f, left, top , length, height)
+
+
+            cp5Turk.addSlider("s", 0.0f, 0.1f, left, top , length, height)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-            cp5.addSlider("Du", 2.0f, 1.0f, left, top +  2 * height , length, height)
+            cp5Turk.addSlider("Du", 0.0f, 1.0f, left, top +  2 * height , length, height)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-            cp5.addSlider("Dv", 2.00f, 0.50f, left, top + 4 * height, length, height)
+            cp5Turk.addSlider("Dv", 0.00f, 1.0f, left, top + 4 * height, length, height)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-            cp5.addSlider("dt", 2.0f, 1.0f, left, top + 6 * height, length, height)
+            cp5Turk.addSlider("dt", 0.0f, 3.0f, left, top + 6 * height, length, height)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-        }
+
+            cp5Turk.hide();
     }
 
 }

@@ -98,7 +98,7 @@ void main() {
         react = grayScott(uv);
         z = 0.0;
     } else {
-        float beta = 12 + z/10.0;
+        float beta = 12.0 + z/10.0;
         react = RTurk(uv, beta);
     }
 
