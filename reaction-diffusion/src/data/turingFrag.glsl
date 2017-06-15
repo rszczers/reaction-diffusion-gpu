@@ -17,6 +17,7 @@ uniform float k;
 uniform float f;
 uniform float s;
 uniform float dt;
+uniform int lapNo;
 uniform bool r;
 
 varying vec4 vertColor;
@@ -40,31 +41,31 @@ vec2 ReactionInhibitor(vec2 val) {
                 val.r * val.r - val.g);
 }
 
-//    float kernel[9] = float[9](0.0, 1.0, 0.0,
-//                               1.0, -4.0, 1.0,
-//                               0.0, 1.0, 0.0);
-//
-    float kernel[9] = float[9](0.05, 0.2, 0.05,
+    float kernelA[9] = float[9](0.0, 1.0, 0.0,
+                               1.0, -4.0, 1.0,
+                               0.0, 1.0, 0.0);
+
+    float kernelB[9] = float[9](0.05, 0.2, 0.05,
                                0.2, -1.0, 0.2,
                                0.05, 0.2, 0.05);
 
-//float kernel[25] = float[25](
-//    0.0, 0.0, 1.0, 0.0, 0.0,
-//    0.0, 0.0, 1.0, 0.0, 0.0,
-//    1.0, 1.0, -4.0, 1.0, 1.0,
-//    0.0, 0.0, 1.0, 0.0, 0.0,
-//    0.0, 0.0, 1.0, 0.0, 0.0);
+    float kernelC[25] = float[25](
+        0.0, 0.0, 1.0, 0.0, 0.0,
+        0.0, 0.0, 1.0, 0.0, 0.0,
+        1.0, 1.0, -4.0, 1.0, 1.0,
+        0.0, 0.0, 1.0, 0.0, 0.0,
+        0.0, 0.0, 1.0, 0.0, 0.0);
 
-//    float kernel [81] = float[81] (
-//    0.0, 1.0, 1.0, 2.0, 2.0, 2.0, 1.0, 1.0, 0.0,
-//    1.0, 2.0, 4.0, 5.0, 5.0, 5.0, 4.0, 2.0, 1.0,
-//    1.0, 4.0, 5.0, 3.0, 0.0, 3.0, 5.0, 4.0, 1.0,
-//    2.0, 6.0, 3.0, -12.0, -24.0, -12.0, 3.0, 4.0, 2.0,
-//    2.0, 5.0, 0.0, -24.0, -40.0, -24.0, 3.0, 5.0, 2.0,
-//    2.0, 6.0, 3.0, -12.0, -24.0, -12.0, 3.0, 4.0, 2.0,
-//    1.0, 4.0, 5.0, 3.0, 0.0, 3.0, 5.0, 4.0, 1.0,
-//    1.0, 2.0, 4.0, 5.0, 5.0, 5.0, 4.0, 2.0, 1.0,
-//    0.0, 1.0, 1.0, 2.0, 2.0, 2.0, 1.0, 1.0, 0.0);
+    float kernelD[81] = float[81] (
+        0.0, 1.0, 1.0, 2.0, 2.0, 2.0, 1.0, 1.0, 0.0,
+        1.0, 2.0, 4.0, 5.0, 5.0, 5.0, 4.0, 2.0, 1.0,
+        1.0, 4.0, 5.0, 3.0, 0.0, 3.0, 5.0, 4.0, 1.0,
+        2.0, 6.0, 3.0, -12.0, -24.0, -12.0, 3.0, 4.0, 2.0,
+        2.0, 5.0, 0.0, -24.0, -40.0, -24.0, 3.0, 5.0, 2.0,
+        2.0, 6.0, 3.0, -12.0, -24.0, -12.0, 3.0, 4.0, 2.0,
+        1.0, 4.0, 5.0, 3.0, 0.0, 3.0, 5.0, 4.0, 1.0,
+        1.0, 2.0, 4.0, 5.0, 5.0, 5.0, 4.0, 2.0, 1.0,
+        0.0, 1.0, 1.0, 2.0, 2.0, 2.0, 1.0, 1.0, 0.0);
 
 void main() {
     float dx = 1.0;
@@ -76,17 +77,61 @@ void main() {
     vec2 cellStepY = vec2(0.0, texOffset.y);
     vec2 f = vec2(0.0, 0.0);
 
-    int xlen = 3;
-    int ylen = 3;
-    int xoffset = 1;
-    int yoffset = 1;
+    int xlen;
+    int ylen;
+    int xoffset;
+    int yoffset;
 
-    for(int i = 0; i < ylen; i++) {
-         for(int j = 0; j < xlen; j++) {
-             f += kernel[i * xlen + j]/(4.0) * texture2D(texture,
-                 vertTexCoord.st + (j - xoffset) * cellStepX + (i - yoffset) * cellStepY).xy;
-         }
+    if (lapNo == 0) {
+        xlen = 3;
+        ylen = 3;
+        yoffset = 1;
+        xoffset = 1;
+
+        for(int i = 0; i < ylen; i++) {
+             for(int j = 0; j < xlen; j++) {
+                 f += kernelA[i * xlen + j]/(4.0) * texture2D(texture,
+                     vertTexCoord.st + (j - xoffset) * cellStepX + (i - yoffset) * cellStepY).xy;
+             }
+        }
+    } else if (lapNo == 1) {
+        xlen = 3;
+        ylen = 3;
+        yoffset = 1;
+        xoffset = 1;
+
+        for(int i = 0; i < ylen; i++) {
+             for(int j = 0; j < xlen; j++) {
+                 f += kernelB[i * xlen + j]/(4.0) * texture2D(texture,
+                     vertTexCoord.st + (j - xoffset) * cellStepX + (i - yoffset) * cellStepY).xy;
+             }
+        }
+    } else if (lapNo == 2) {
+        xlen = 5;
+        ylen = 5;
+        yoffset = 2;
+        xoffset = 2;
+
+        for(int i = 0; i < ylen; i++) {
+             for(int j = 0; j < xlen; j++) {
+                 f += kernelC[i * xlen + j]/(4.0) * texture2D(texture,
+                     vertTexCoord.st + (j - xoffset) * cellStepX + (i - yoffset) * cellStepY).xy;
+             }
+        }
+    } else if (lapNo == 3) {
+        xlen = 9;
+        ylen = 9;
+        yoffset = 4;
+        xoffset = 4;
+
+        for(int i = 0; i < ylen; i++) {
+             for(int j = 0; j < xlen; j++) {
+                 f += kernelD[i * xlen + j]/(4.0) * texture2D(texture,
+                     vertTexCoord.st + (j - xoffset) * cellStepX + (i - yoffset) * cellStepY).xy;
+             }
+        }
     }
+
 
     vec2 uv = texture2D(texture, vertTexCoord.st).xy;
     vec2 laplacian = f / pow(dx, 2.0);
