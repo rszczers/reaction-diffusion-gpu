@@ -51,12 +51,12 @@ public class Main extends PApplet {
             }
         }
         backbuffer.updatePixels();
-        backbuffer = loadImage("init.png");
+//        backbuffer = loadImage("init.png");
         shaderLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P3D);
 
         shaderLayer.beginDraw();
-//            shaderLayer.image(backbuffer, 0, 0, WIDTH, HEIGHT);
-            shaderLayer.background(255.0f, 0, 0);
+            shaderLayer.image(backbuffer, 0, 0, WIDTH, HEIGHT);
+//            shaderLayer.background(255.0f, 0, 0);
         shaderLayer.endDraw();
 
         presentationLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P2D);
