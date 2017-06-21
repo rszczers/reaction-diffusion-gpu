@@ -18,11 +18,11 @@ public class Main extends PApplet {
 
     private static int barHeight = 110;
 
-    private final static int WIDTH = 1200;
-    private final static int HEIGHT = 1000;
+    private final static int WIDTH = 1000;
+    private final static int HEIGHT = 700;
 
-    private final static int SAMPLE_WIDTH = 1200;
-    private final static int SAMPLE_HEIGHT = 1000 - barHeight;
+    private final static int SAMPLE_WIDTH = WIDTH;
+    private final static int SAMPLE_HEIGHT = HEIGHT - barHeight;
 
     private static boolean drawPresentation = true;
     private static int brushType = 0;
@@ -40,9 +40,9 @@ public class Main extends PApplet {
     private static float f = 0.06f;
     private static float k = 0.12f;
     private static float s = 0.06f;
-    private static float dt = 0.7f;
+    private static float dt = 1.0f;
 
-    public PImage sampler;
+    private PImage sampler;
 
     public static void main(String[] args) {
         PApplet.main("Main");
@@ -51,7 +51,6 @@ public class Main extends PApplet {
     @Override
     public void settings() {
         size( WIDTH, HEIGHT, P2D);
-        sampler = new PImage(SAMPLE_WIDTH, SAMPLE_HEIGHT);
     }
 
     @Override
@@ -59,18 +58,7 @@ public class Main extends PApplet {
         cp5Scott = new ControlP5(this);
         cp5Turk = new ControlP5(this);
         setGUI();
-        Random random = new Random();
-        int k = sampler.pixels.length;
-        for (int i = 0; i < k; i++) {
-            int j = random.nextInt(k);
-            if(random.nextBoolean()) {
-                sampler.pixels[j] = color(random.nextInt(255), 0, random.nextInt(100));
-            } else {
-                sampler.pixels[j] = color(0, random.nextInt(255), random.nextInt(100));
-            }
-        }
-        sampler.updatePixels();
-//        sampler = loadImage("init.png");
+        sampler = randomSampler();
         shaderLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P2D);
 
         shaderLayer.beginDraw();
@@ -263,7 +251,7 @@ public class Main extends PApplet {
                 brushWeight -= brushWeight / 2.0;
             }
         }
-        if (key == 'r' || key == 'R') {
+        if (key == 'r') {
             shaderLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P2D);
             shaderLayer.beginDraw();
 //            shaderLayer.image(sampler, SAMPLE_WIDTH, SAMPLE_HEIGHT);
@@ -271,8 +259,10 @@ public class Main extends PApplet {
 //            shaderLayer.rect(-10.0f, -10.0f, SAMPLE_WIDTH + 10, SAMPLE_HEIGHT + 10);
             shaderLayer.background(255, 0, 0);
             shaderLayer.endDraw();
-
-
+        }
+        if (key == 'R') {
+            shaderLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P2D);
+            setup();
         }
         if (key == 'c' || key == 'C') {
             drawCursor = !drawCursor;
@@ -327,6 +317,22 @@ public class Main extends PApplet {
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
 
             cp5Turk.hide();
+    }
+
+    private PImage randomSampler() {
+        sampler = new PImage(SAMPLE_WIDTH, SAMPLE_HEIGHT);
+        Random random = new Random();
+        int k = sampler.pixels.length;
+        for (int i = 0; i < k; i++) {
+            int j = random.nextInt(k);
+            if(random.nextBoolean()) {
+                sampler.pixels[j] = color(random.nextInt(255), 0, random.nextInt(100));
+            } else {
+                sampler.pixels[j] = color(0, random.nextInt(255), random.nextInt(100));
+            }
+        }
+        sampler.updatePixels();
+        return sampler;
     }
 
 }

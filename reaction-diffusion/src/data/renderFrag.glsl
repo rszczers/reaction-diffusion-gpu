@@ -1,7 +1,8 @@
-#ifdef GL_ES
-precision highp float;
-precision highp int;
-#endif
+#version 150
+//#ifdef GL_ES
+//precision highp float;
+//precision highp int;
+//#endif
 
 #define PROCESSING_TEXTURE_SHADER
 

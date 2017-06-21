@@ -1,7 +1,9 @@
-#ifdef GL_ES
-precision highp float;
-precision highp int;
-#endif
+#version 150
+//
+//#ifdef GL_ES
+//precision highp float;
+//precision highp int;
+//#endif
 
 #define PROCESSING_TEXTURE_SHADER
 
@@ -25,13 +27,13 @@ varying vec4 vertTexCoord;
 
 vec2 RTurk(vec2 val, float beta) {
     return vec2(
-            s * (16 - val.r * val.g),
+            s * (16.0 - val.r * val.g),
             s * (val.r * val.g - val.g - beta));
 }
 
 vec2 grayScott(vec2 val) {
    return vec2(
-           - val.r * val.g * val.g + f * (1.0 - val.r),
+            -val.r * val.g * val.g + f * (1.0 - val.r),
              val.r * val.g * val.g - (k + f) * val.g );
 }
 
@@ -147,8 +149,8 @@ void main() {
         react = RTurk(uv, beta);
     }
 
-    vec2 delta = D * laplacian + react;
-    vec3 o = clamp(vec3(uv + dt * delta, z), 0.0, 1.0);
+    vec2 delta = clamp(D * laplacian + react, -1.0, 1.0);
+    vec3 o = vec3(uv + dt * delta, z);
 
     gl_FragColor = vec4(o, 1.0);
 }
