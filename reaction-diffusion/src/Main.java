@@ -260,9 +260,27 @@ public class Main extends PApplet {
             shaderLayer.background(255, 0, 0);
             shaderLayer.endDraw();
         }
-        if (key == 'R') {
+        if (key == 't' || key == 'T') {
             shaderLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P2D);
             setup();
+        }
+        if (key == 'R') {
+            shaderLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P2D);
+            shaderLayer.beginDraw();
+//            shaderLayer.image(sampler, SAMPLE_WIDTH, SAMPLE_HEIGHT);
+//            shaderLayer.fill(255, 0, 0);
+//            shaderLayer.rect(-10.0f, -10.0f, SAMPLE_WIDTH + 10, SAMPLE_HEIGHT + 10);
+            shaderLayer.background(0, 255, 0);
+            shaderLayer.endDraw();
+        }
+        if (key == 'b' || key == 'B') {
+            shaderLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P2D);
+            shaderLayer.beginDraw();
+//            shaderLayer.image(sampler, SAMPLE_WIDTH, SAMPLE_HEIGHT);
+//            shaderLayer.fill(255, 0, 0);
+//            shaderLayer.rect(-10.0f, -10.0f, SAMPLE_WIDTH + 10, SAMPLE_HEIGHT + 10);
+            shaderLayer.background(0, 0, 0);
+            shaderLayer.endDraw();
         }
         if (key == 'c' || key == 'C') {
             drawCursor = !drawCursor;
