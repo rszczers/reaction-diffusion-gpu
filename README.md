@@ -17,11 +17,11 @@ LMB – paint,
 ]/[ – increase/decrease density,
 +/- – increase/decrease brush size,
 L – switch laplacian kernel,
-Z – switch between Gray-Scott /  G. Turk reaction model,
+Z – switch between Gray-Scott / G. Turk reaction model,
 r – reset with full activator,
 R - reset with full inhibitor,
 b - reset with blank screen,
 t - reset with random data,
-P – change view mode,
+P – switch between raw and postprocessed view,
 C – draw cursor. 
 </pre>
