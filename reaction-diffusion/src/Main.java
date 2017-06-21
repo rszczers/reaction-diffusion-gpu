@@ -32,15 +32,15 @@ public class Main extends PApplet {
     private static boolean drawCursor = true;
     private static boolean grayScottOrTruk = true;
     private static boolean mouseControllPanel = false;
-    private static int laplacian = 0;
     private static String brushTypeLabel = "activator";
 
-    private static float Du = 0.16f;
-    private static float Dv = 0.08f;
-    private static float f = 0.035f;
-    private static float k = 0.065f;
-    private static float s = 0.01125f;
-    private static float dt = 1.0f;
+    private static int laplacian = 3;
+    private static float Du = 0.15f;
+    private static float Dv = 0.11f;
+    private static float f = 0.06f;
+    private static float k = 0.12f;
+    private static float s = 0.06f;
+    private static float dt = 0.7f;
 
     public PImage sampler;
 
@@ -71,7 +71,7 @@ public class Main extends PApplet {
         }
         sampler.updatePixels();
 //        sampler = loadImage("init.png");
-        shaderLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P3D);
+        shaderLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P2D);
 
         shaderLayer.beginDraw();
             shaderLayer.image(sampler, 0, 0, WIDTH, HEIGHT-barHeight);
@@ -104,7 +104,10 @@ public class Main extends PApplet {
         turingShader.set("lapNo", laplacian);
 
         shaderLayer.beginDraw();
+//        for (int i = 0; i < 10 ; i++) {
+
             shaderLayer.filter(turingShader);
+//        }
         shaderLayer.endDraw();
 
         if (mousePressed == true && !mouseControllPanel) mouseEvent();
@@ -234,11 +237,11 @@ public class Main extends PApplet {
         }
         if (key == '3' || key == 'e' || key == 'E') {
             brushType = 2;
-            brushTypeLabel = "random";
+            brushTypeLabel = "eraser";
         }
         if (key == '4' || key == 'a' || key == 'A') {
             brushType = 3;
-            brushTypeLabel = "eraser";
+            brushTypeLabel = "random";
         }
         if (key == '5') {
             brushType = 4;
@@ -261,11 +264,14 @@ public class Main extends PApplet {
             }
         }
         if (key == 'r' || key == 'R') {
+            shaderLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P2D);
             shaderLayer.beginDraw();
 //            shaderLayer.image(sampler, SAMPLE_WIDTH, SAMPLE_HEIGHT);
-            shaderLayer.fill(255, 0, 0);
-            shaderLayer.rect(0.0f, 0.0f, SAMPLE_WIDTH, SAMPLE_HEIGHT);
+//            shaderLayer.fill(255, 0, 0);
+//            shaderLayer.rect(-10.0f, -10.0f, SAMPLE_WIDTH + 10, SAMPLE_HEIGHT + 10);
+            shaderLayer.background(255, 0, 0);
             shaderLayer.endDraw();
+
 
         }
         if (key == 'c' || key == 'C') {
