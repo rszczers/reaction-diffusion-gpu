@@ -8,7 +8,7 @@ solution of r-d system by glsl and explicit finite-difference method
 
 ## Controls
 * L - switch laplacian kernel,
-* z - switch between Gray-Scott /  G. Turk model,
+* z - switch between Gray-Scott /  G. Turk reaction model,
 * LMB - paint,
 * 1 - activator brush,
 * 2 - inhibitor brush,
