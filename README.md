@@ -18,7 +18,8 @@ LMB – paint,
 +/- – increase/decrease brush size,
 L – switch laplacian kernel,
 Z – switch between Gray-Scott /  G. Turk reaction model,
-R – reset,
+r – reset with full activator,
+R - reset with random data,
 P – change view mode,
 C – draw cursor. 
 </pre>
