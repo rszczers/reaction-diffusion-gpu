@@ -316,26 +316,26 @@ public class Main extends PApplet {
             int height = 10;
             int top = HEIGHT - 10 * height;
 
-            cp5Scott.addSlider("f", 0.0f, 0.65f, left, top, length, height)
+            cp5Scott.addSlider("f", 0.0f, 0.65f, left, top, length, height).setDecimalPrecision(4)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-            cp5Scott.addSlider("k", 0.0f, 0.65f, left, top + 2 * height, length, height)
+            cp5Scott.addSlider("k", 0.0f, 0.65f, left, top + 2 * height, length, height).setDecimalPrecision(4)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-            cp5Scott.addSlider("Du", 0.0f, 1.0f, left, top + 4 * height, length, height)
+            cp5Scott.addSlider("Du", 0.0f, 1.0f, left, top + 4 * height, length, height).setDecimalPrecision(4)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-            cp5Scott.addSlider("Dv", 0.00f, 1.0f, left, top + 6 * height, length, height)
+            cp5Scott.addSlider("Dv", 0.00f, 1.0f, left, top + 6 * height, length, height).setDecimalPrecision(4)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-            cp5Scott.addSlider("dt", 0.0f, 1.5f, left, top + 8 * height, length, height)
+            cp5Scott.addSlider("dt", 0.0f, 1.5f, left, top + 8 * height, length, height).setDecimalPrecision(4)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
 
 
 
-            cp5Turk.addSlider("s", 0.0f, 0.1f, left, top , length, height)
+            cp5Turk.addSlider("s", 0.0f, 0.1f, left, top , length, height).setDecimalPrecision(4)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-            cp5Turk.addSlider("Du", 0.0f, 1.0f, left, top +  2 * height , length, height)
+            cp5Turk.addSlider("Du", 0.0f, 1.0f, left, top +  2 * height , length, height).setDecimalPrecision(4)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-            cp5Turk.addSlider("Dv", 0.00f, 1.0f, left, top + 4 * height, length, height)
+            cp5Turk.addSlider("Dv", 0.00f, 1.0f, left, top + 4 * height, length, height).setDecimalPrecision(4)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
-            cp5Turk.addSlider("dt", 0.0f, 1.5f, left, top + 6 * height, length, height)
+            cp5Turk.addSlider("dt", 0.0f, 1.5f, left, top + 6 * height, length, height).setDecimalPrecision(4)
                     .setColorValue(color(255)).setColorActive(color(155)).setColorForeground(color(155)).setColorLabel(color(50)).setColorBackground(color(50));
 
             cp5Turk.hide();
