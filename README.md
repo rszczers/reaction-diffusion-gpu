@@ -25,3 +25,8 @@ t - reset with random data,
 P – switch between raw and postprocessed view,
 C – draw cursor. 
 </pre>
+
+## Usage
+<pre>
+java -jar bin/reaction-diffusion-gpu.jar
+</pre>
