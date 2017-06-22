@@ -261,8 +261,13 @@ public class Main extends PApplet {
             shaderLayer.endDraw();
         }
         if (key == 't' || key == 'T') {
+            sampler = randomSampler();
             shaderLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P2D);
-            setup();
+
+            shaderLayer.beginDraw();
+            shaderLayer.image(sampler, 0, 0, WIDTH, HEIGHT-barHeight);
+//            shaderLayer.background(255.0f, 0, 0);
+            shaderLayer.endDraw();
         }
         if (key == 'R') {
             shaderLayer = createGraphics(SAMPLE_WIDTH, SAMPLE_HEIGHT, P2D);
@@ -290,12 +295,11 @@ public class Main extends PApplet {
         }
         if (key == 'z' || key == 'Z') {
             grayScottOrTruk = !grayScottOrTruk;
-
-            if(grayScottOrTruk){
+            if (grayScottOrTruk) {
                 cp5Turk.hide();
                 cp5Scott.show();
                 cp5Scott.update();
-            } else{
+            } else {
                 cp5Scott.hide();
                 cp5Turk.show();
                 cp5Turk.update();
