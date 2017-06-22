@@ -24,6 +24,7 @@ C – draw cursor.
 </pre>
 
 ## Usage
+In project directory run
 <pre>
 java -jar bin/reaction-diffusion.jar
 </pre>
