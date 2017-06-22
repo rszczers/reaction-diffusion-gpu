@@ -28,5 +28,5 @@ C – draw cursor.
 
 ## Usage
 <pre>
-java -jar bin/reaction-diffusion-gpu.jar
+java -jar bin/reaction-diffusion.jar
 </pre>
