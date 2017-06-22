@@ -28,4 +28,9 @@ C – draw cursor.
 java -jar bin/reaction-diffusion.jar
 </pre>
 
+## Preview
 ![](https://github.com/rszczers/reaction-diffusion-gpu/blob/master/t0.png)
+![](https://github.com/rszczers/reaction-diffusion-gpu/blob/master/t1.png)
+![](https://github.com/rszczers/reaction-diffusion-gpu/blob/master/t2.png)
+![](https://github.com/rszczers/reaction-diffusion-gpu/blob/master/t3.png)
+![](https://github.com/rszczers/reaction-diffusion-gpu/blob/master/t4.png)
