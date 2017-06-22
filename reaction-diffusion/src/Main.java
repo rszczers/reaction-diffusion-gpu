@@ -41,6 +41,7 @@ public class Main extends PApplet {
     private static float k = 0.065f;
     private static float s = 0.063f;
     private static float dt = 1.0f;
+    private static int iterationsPerFrame = 1;
 
     private PImage sampler;
 
@@ -55,6 +56,7 @@ public class Main extends PApplet {
 
     @Override
     public void setup() {
+        surface.setTitle("Reaction-diffusion");
         cp5Scott = new ControlP5(this);
         cp5Turk = new ControlP5(this);
         setGUI();
@@ -75,8 +77,7 @@ public class Main extends PApplet {
 
         roboto_regular = createFont("Roboto-Regular.ttf", 14);
         textFont(roboto_regular);
-//        frameRate(30);
-        surface.setTitle("Reaction-diffusion");
+        frameRate(30);
         noStroke();
     }
 
@@ -92,10 +93,9 @@ public class Main extends PApplet {
         turingShader.set("lapNo", laplacian);
 
         shaderLayer.beginDraw();
-//        for (int i = 0; i < 10 ; i++) {
-
+        for (int i = 0; i < iterationsPerFrame; i++) {
             shaderLayer.filter(turingShader);
-//        }
+        }
         shaderLayer.endDraw();
 
         if (mousePressed == true && !mouseControllPanel) mouseEvent();
@@ -121,6 +121,11 @@ public class Main extends PApplet {
         fill(245);
         text(brushTypeLabel, 130.0f, 15.0f);
 
+        fill(5);
+        rect(205.0f, 0.0f, 35f, 20f);
+        fill(245);
+        text("i: " + iterationsPerFrame, 210.0f, 15.0f);
+
         if (drawCursor && !mouseControllPanel) {
             noCursor();
             brush();
@@ -132,7 +137,6 @@ public class Main extends PApplet {
         } else {
             mouseControllPanel = false;
         }
-
 
         fill(255);
         rect(0.0f, HEIGHT - barHeight, WIDTH, barHeight);
@@ -304,6 +308,17 @@ public class Main extends PApplet {
                 cp5Turk.show();
                 cp5Turk.update();
             }
+        }
+        if (key == '.' || key == '>') {
+                iterationsPerFrame++;
+        }
+        if (key == ',' || key == '<') {
+            if (this.iterationsPerFrame > 0) {
+                iterationsPerFrame--;
+            }
+        }
+        if (key == 'm' || key == 'M') {
+            iterationsPerFrame = 0;
         }
     }
 
