@@ -38,3 +38,4 @@ java -jar bin/reaction-diffusion.jar
 ![](https://github.com/rszczers/reaction-diffusion-gpu/blob/master/t2.png)
 ![](https://github.com/rszczers/reaction-diffusion-gpu/blob/master/t3.png)
 ![](https://github.com/rszczers/reaction-diffusion-gpu/blob/master/t4.png)
+![](https://github.com/rszczers/reaction-diffusion-gpu/blob/master/t6.png)
