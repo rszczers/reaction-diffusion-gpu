@@ -20,7 +20,7 @@ R - reset with full inhibitor,
 b - reset with blank screen,
 t - reset with random data,
 P – switch between raw and postprocessed view,
-> – increase/decrease number iterations per frame,
+>/< – increase/decrease number iterations per frame,
 m – stop (set number of iterations to 0),
 c – draw cursor.
 </pre>
