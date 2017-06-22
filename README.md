@@ -1,5 +1,5 @@
 # reaction-diffusion-gpu
-Solution of r-d system by glsl and explicit finite-difference method.
+Solution of reaction-diffusion system with glsl shader and explicit finite-difference method.
 
 ![](https://github.com/rszczers/reaction-diffusion-gpu/blob/master/t.gif)
 
