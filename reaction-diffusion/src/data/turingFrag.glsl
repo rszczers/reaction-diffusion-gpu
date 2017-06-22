@@ -92,7 +92,7 @@ void main() {
 
         for(int i = 0; i < ylen; i++) {
              for(int j = 0; j < xlen; j++) {
-                 f += kernelA[i * xlen + j]/(4.0) * texture2D(texture,
+                 f += kernelA[i * xlen + j] * texture2D(texture,
                      vertTexCoord.st + (j - xoffset) * cellStepX + (i - yoffset) * cellStepY).xy;
              }
         }
@@ -104,7 +104,7 @@ void main() {
 
         for(int i = 0; i < ylen; i++) {
              for(int j = 0; j < xlen; j++) {
-                 f += kernelB[i * xlen + j]/(4.0) * texture2D(texture,
+                 f += kernelB[i * xlen + j] * texture2D(texture,
                      vertTexCoord.st + (j - xoffset) * cellStepX + (i - yoffset) * cellStepY).xy;
              }
         }
@@ -116,7 +116,7 @@ void main() {
 
         for(int i = 0; i < ylen; i++) {
              for(int j = 0; j < xlen; j++) {
-                 f += kernelC[i * xlen + j]/(4.0) * texture2D(texture,
+                 f += kernelC[i * xlen + j] * texture2D(texture,
                      vertTexCoord.st + (j - xoffset) * cellStepX + (i - yoffset) * cellStepY).xy;
              }
         }
@@ -128,7 +128,7 @@ void main() {
 
         for(int i = 0; i < ylen; i++) {
              for(int j = 0; j < xlen; j++) {
-                 f += kernelD[i * xlen + j]/(4.0) * texture2D(texture,
+                 f += kernelD[i * xlen + j]/40.0 * texture2D(texture,
                      vertTexCoord.st + (j - xoffset) * cellStepX + (i - yoffset) * cellStepY).xy;
              }
         }

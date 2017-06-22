@@ -75,7 +75,7 @@ public class Main extends PApplet {
 
         roboto_regular = createFont("Roboto-Regular.ttf", 14);
         textFont(roboto_regular);
-        frameRate(30);
+//        frameRate(30);
 
         noStroke();
     }
