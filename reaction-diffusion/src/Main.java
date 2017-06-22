@@ -34,12 +34,12 @@ public class Main extends PApplet {
     private static boolean mouseControllPanel = false;
     private static String brushTypeLabel = "activator";
 
-    private static int laplacian = 3;
-    private static float Du = 0.15f;
-    private static float Dv = 0.11f;
-    private static float f = 0.06f;
-    private static float k = 0.12f;
-    private static float s = 0.06f;
+    private static int laplacian = 1;
+    private static float Du = 1.0f;
+    private static float Dv = 0.34f;
+    private static float f = 0.05f;
+    private static float k = 0.065f;
+    private static float s = 0.063f;
     private static float dt = 1.0f;
 
     private PImage sampler;

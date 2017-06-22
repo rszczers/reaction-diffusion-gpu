@@ -1,5 +1,5 @@
 # reaction-diffusion-gpu
-solution of r-d system by glsl and explicit finite-difference method
+Solution of r-d system by glsl and explicit finite-difference method.
 
 
 ![](https://github.com/rszczers/reaction-diffusion-gpu/blob/master/t.gif)
@@ -24,4 +24,9 @@ b - reset with blank screen,
 t - reset with random data,
 P – switch between raw and postprocessed view,
 C – draw cursor. 
+</pre>
+
+## Usage
+<pre>
+java -jar bin/reaction-diffusion.jar
 </pre>
