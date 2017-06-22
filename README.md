@@ -1,5 +1,5 @@
 # reaction-diffusion-gpu
-Solution of r-d system by glsl and explicit finite-difference method.
+Solution of reaction-diffusion system with glsl shader and explicit finite-difference method.
 
 ![](https://github.com/rszczers/reaction-diffusion-gpu/blob/master/t.gif)
 
@@ -24,11 +24,13 @@ C – draw cursor.
 </pre>
 
 ## Usage
+In project directory run
 <pre>
 java -jar bin/reaction-diffusion.jar
 </pre>
 
 ## Preview
+![](https://github.com/rszczers/reaction-diffusion-gpu/blob/master/t5.png)
 ![](https://github.com/rszczers/reaction-diffusion-gpu/blob/master/t0.png)
 ![](https://github.com/rszczers/reaction-diffusion-gpu/blob/master/t1.png)
 ![](https://github.com/rszczers/reaction-diffusion-gpu/blob/master/t2.png)
