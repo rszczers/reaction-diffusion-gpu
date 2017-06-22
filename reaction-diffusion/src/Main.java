@@ -76,7 +76,7 @@ public class Main extends PApplet {
         roboto_regular = createFont("Roboto-Regular.ttf", 14);
         textFont(roboto_regular);
 //        frameRate(30);
-
+        surface.setTitle("Reaction-diffusion");
         noStroke();
     }
 
