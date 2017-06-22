@@ -11,7 +11,7 @@ LMB – paint,
 3 – eraser,
 4 – random brush,
 5 – pen,
-]/[ – increase/decrease density,
+]/[ – increase/decrease brush density,
 +/- – increase/decrease brush size,
 L – switch laplacian kernel,
 Z – switch between Gray-Scott / G. Turk reaction model,
@@ -19,8 +19,10 @@ r – reset with full activator,
 R - reset with full inhibitor,
 b - reset with blank screen,
 t - reset with random data,
-P – switch between raw and postprocessed view,
-C – draw cursor. 
+p – switch between raw and postprocessed view,
+>/< – increase/decrease number iterations per frame,
+m – stop (set number of iterations to 0),
+c – draw cursor.
 </pre>
 
 ## Usage
