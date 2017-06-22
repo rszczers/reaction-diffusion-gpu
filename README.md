@@ -1,10 +1,7 @@
 # reaction-diffusion-gpu
 Solution of r-d system by glsl and explicit finite-difference method.
 
-
 ![](https://github.com/rszczers/reaction-diffusion-gpu/blob/master/t.gif)
-
-(Click the animation to view full youtube demo)
 
 ## Controls
 <pre>
@@ -30,3 +27,5 @@ C – draw cursor.
 <pre>
 java -jar bin/reaction-diffusion.jar
 </pre>
+
+![](https://github.com/rszczers/reaction-diffusion-gpu/blob/master/t1.png)
